@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#f59e0b"/>
+    <stop offset="1" stop-color="#f472b6"/>
+  </linearGradient>
+    <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#b45309"/>
+    <stop offset="1" stop-color="#f59e0b"/>
+  </linearGradient>
+    <clipPath id="round"><rect width="1024" height="1024" rx="224" ry="224"/></clipPath>
+  </defs>
+  <g clip-path="url(#round)">
+    <rect width="1024" height="1024" fill="url(#bg)"/>
+    <rect width="1024" height="1024" fill="url(#bg2)" opacity="0.35"/>
+    
+    <g opacity="1">
+      <circle cx="512" cy="512" r="290" fill="none" stroke="#ffffff" stroke-width="14" opacity="0.92"/>
+      <circle cx="512" cy="512" r="324" fill="none" stroke="#ffffff" stroke-width="6" opacity="0.40"/>
+      <path d="M 512.00 222.00 L 763.15 657.00 L 260.85 657.00 L 698.41 289.85 L 611.19 784.51 L 226.41 461.64 L 797.59 461.64 L 412.81 784.51 L 325.59 289.85 L 512.00 222.00  Z" fill="none" stroke="#ffffff" stroke-width="9" stroke-linejoin="round" opacity="0.78"/>
+      <circle cx="512.00" cy="222.00" r="22" fill="#ffffff" opacity="1"/><circle cx="698.41" cy="289.85" r="22" fill="#ffffff" opacity="1"/><circle cx="797.59" cy="461.64" r="22" fill="#ffffff" opacity="1"/><circle cx="763.15" cy="657.00" r="22" fill="#ffffff" opacity="1"/><circle cx="611.19" cy="784.51" r="22" fill="#ffffff" opacity="1"/><circle cx="412.81" cy="784.51" r="22" fill="#ffffff" opacity="1"/><circle cx="260.85" cy="657.00" r="22" fill="#ffffff" opacity="1"/><circle cx="226.41" cy="461.64" r="22" fill="#ffffff" opacity="1"/><circle cx="325.59" cy="289.85" r="22" fill="#ffffff" opacity="1"/>
+      <circle cx="512" cy="512" r="14" fill="#ffffff" opacity="0.95"/>
+    </g>
+  </g>
+</svg>

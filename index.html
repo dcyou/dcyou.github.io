@@ -1,0 +1,582 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>dcyou — applications mobiles</title>
+<meta name="description" content="dcyou — des applications mobiles simples, développées en solo par David Turbert. Quiz, jeux et petits outils du quotidien.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#11141c" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:title" content="dcyou — applications mobiles">
+<meta property="og:description" content="Des applications mobiles simples, développées en solo. Quiz, jeux et petits outils du quotidien.">
+<meta property="og:url" content="https://dcyou.co/">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="de_DE">
+<meta property="og:locale:alternate" content="it_IT">
+<meta property="og:locale:alternate" content="es_ES">
+<meta property="og:locale:alternate" content="pt_PT">
+<meta property="og:locale:alternate" content="pt_BR">
+<meta property="og:locale:alternate" content="nl_NL">
+<meta property="og:locale:alternate" content="sv_SE">
+<meta property="og:locale:alternate" content="da_DK">
+<meta property="og:locale:alternate" content="nb_NO">
+<meta property="og:locale:alternate" content="fi_FI">
+<meta property="og:locale:alternate" content="pl_PL">
+<meta property="og:locale:alternate" content="cs_CZ">
+<meta property="og:locale:alternate" content="hu_HU">
+<meta property="og:locale:alternate" content="ro_RO">
+<meta property="og:locale:alternate" content="el_GR">
+<meta property="og:locale:alternate" content="ru_RU">
+<meta property="og:locale:alternate" content="uk_UA">
+<meta property="og:locale:alternate" content="tr_TR">
+<meta property="og:locale:alternate" content="ar_AR">
+<meta property="og:locale:alternate" content="hi_IN">
+<meta property="og:locale:alternate" content="th_TH">
+<meta property="og:locale:alternate" content="vi_VN">
+<meta property="og:locale:alternate" content="id_ID">
+<meta property="og:locale:alternate" content="ms_MY">
+<meta property="og:locale:alternate" content="zh_CN">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="ja_JP">
+<meta property="og:locale:alternate" content="ko_KR">
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #1c1f26;
+    --muted: #6c7280;
+    --surface: #f6f7f9;
+    --surface-hover: #eef0f4;
+    --border: #e2e5ea;
+    --accent: #3b5bdb;
+    --badge-bg: #eef0f4;
+    --badge-fg: #6c7280;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #11141c;
+      --fg: #e7e9f0;
+      --muted: #969cad;
+      --surface: #181c27;
+      --surface-hover: #1f2431;
+      --border: #262b38;
+      --accent: #91a7ff;
+      --badge-bg: #232936;
+      --badge-fg: #969cad;
+    }
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    padding: 2rem 1.25rem 4rem;
+    font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-wrap: break-word;
+  }
+
+  .wrap { max-width: 56rem; margin: 0 auto; }
+
+  /* ---------- barre de langue ---------- */
+  .topbar {
+    display: flex;
+    justify-content: flex-end;
+    min-height: 1.75rem;
+    margin-bottom: 1.25rem;
+  }
+  .langwrap { display: none; position: relative; max-width: 100%; }
+  .js .langwrap { display: inline-block; }
+  .langwrap::after {
+    content: "";
+    position: absolute;
+    top: calc(50% - 5px);
+    inset-inline-end: .7rem;
+    width: 6px;
+    height: 6px;
+    border-right: 2px solid var(--muted);
+    border-bottom: 2px solid var(--muted);
+    transform: rotate(45deg);
+    pointer-events: none;
+  }
+  .langsel {
+    font-family: inherit;
+    font-size: .85rem;
+    line-height: 1.4;
+    color: var(--fg);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: .35rem 2rem .35rem .7rem;
+    padding-inline: .7rem 2rem;
+    max-width: 100%;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+  }
+  .langsel:hover { border-color: var(--accent); }
+  .langsel:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* ---------- en-tête ---------- */
+  header { margin-bottom: 3rem; }
+
+  .wordmark {
+    font-size: clamp(2.5rem, 12vw, 3.75rem);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    margin: 0 0 1rem;
+  }
+  /* La marque est toujours lue de gauche à droite, même en RTL. */
+  .wordmark .mark { direction: ltr; unicode-bidi: isolate; display: inline-block; }
+  .wordmark .dot { color: var(--accent); }
+
+  .tagline {
+    font-size: clamp(1.05rem, 4.2vw, 1.25rem);
+    color: var(--fg);
+    max-width: 34rem;
+    margin: 0 0 .6rem;
+    text-wrap: balance;
+  }
+  .sub {
+    color: var(--muted);
+    max-width: 34rem;
+    margin: 0;
+    font-size: .95rem;
+  }
+
+  /* ---------- sections ---------- */
+  section { margin-bottom: 3rem; }
+
+  h2 {
+    font-size: .8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .09em;
+    color: var(--muted);
+    margin: 0 0 1rem;
+  }
+
+  /* ---------- grille ---------- */
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: .75rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  @media (min-width: 34rem) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 52rem) { .grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .card {
+    display: flex;
+    gap: .9rem;
+    align-items: flex-start;
+    height: 100%;
+    padding: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--surface);
+    color: inherit;
+    text-decoration: none;
+    transition: background-color .18s ease, border-color .18s ease, transform .18s ease;
+  }
+  a.card:hover, a.card:focus-visible {
+    background: var(--surface-hover);
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  a.card:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .card img {
+    width: 48px;
+    height: 48px;
+    flex: 0 0 48px;
+    border-radius: 11px;
+    display: block;
+  }
+
+  /* ---------- carte teaser (apps non annoncées) ---------- */
+  .teaser { align-items: center; }
+  .teaser .glyph {
+    width: 48px;
+    height: 48px;
+    flex: 0 0 48px;
+    display: block;
+    color: var(--muted);
+  }
+  .teaser .glyph svg { display: block; width: 100%; height: 100%; }
+
+  .card .body { min-width: 0; }
+
+  .card h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 .2rem;
+    display: flex;
+    align-items: center;
+    gap: .45rem;
+    flex-wrap: wrap;
+  }
+  /* Les noms d'applications ne sont jamais traduits : on les isole du bidi. */
+  .card h3 .name { unicode-bidi: isolate; }
+  .card p {
+    margin: 0;
+    font-size: .875rem;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+
+  .badge {
+    font-size: .65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    padding: .15rem .4rem;
+    border-radius: 5px;
+    background: var(--badge-bg);
+    color: var(--badge-fg);
+    white-space: nowrap;
+  }
+
+  /* ---------- pied de page ---------- */
+  footer {
+    border-top: 1px solid var(--border);
+    padding-top: 1.5rem;
+    color: var(--muted);
+    font-size: .9rem;
+  }
+  footer p { margin: 0 0 .5rem; }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+  footer a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+  /* L'adresse e-mail reste en LTR au milieu d'une phrase RTL. */
+  footer a[href^="mailto:"] { unicode-bidi: isolate; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+    a.card:hover, a.card:focus-visible { transform: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <span class="langwrap">
+      <select class="langsel" id="langsel" aria-label="Langue"></select>
+    </span>
+  </div>
+
+  <header>
+    <h1 class="wordmark"><span class="mark">dcyou<span class="dot">.</span></span></h1>
+    <p class="tagline" data-i18n="tagline">Des applications mobiles simples&nbsp;: une&nbsp;idée, quelques écrans, et ça marche.</p>
+    <p class="sub" data-i18n="sub">Conçues et développées en solo par David Turbert. La plupart s’essaient directement dans le navigateur, sans rien installer.</p>
+  </header>
+
+  <section aria-labelledby="dispo">
+    <h2 id="dispo" data-i18n="h_now">À essayer maintenant</h2>
+    <ul class="grid">
+
+      <li><a class="card" href="https://letterscatch.dcyou.co">
+        <img src="./icons/letterscatch.svg" data-i18n-alt="alticon" data-app="LettersCatch" alt="Icône de l’application LettersCatch" width="48" height="48">
+        <div class="body">
+          <h3><span class="name">LettersCatch</span> <span class="badge" data-i18n="b_stores">bientôt sur les stores</span></h3>
+          <p data-i18n="d_lc">Un jeu de collection&nbsp;: photographiez les grands panneaux-lettres des villes et grimpez au classement.</p>
+        </div>
+      </a></li>
+
+      <li><a class="card" href="https://duomatch.dcyou.co">
+        <img src="./icons/duomatch.svg" data-i18n-alt="alticon" data-app="DuoMatch" alt="Icône de l’application DuoMatch" width="48" height="48">
+        <div class="body">
+          <h3><span class="name">DuoMatch</span></h3>
+          <p data-i18n="d_dm">Deux prénoms, un score sur 100&nbsp;: compatibilité amoureuse, amicale ou passionnelle.</p>
+        </div>
+      </a></li>
+
+      <li><a class="card" href="https://animalsoul.dcyou.co">
+        <img src="./icons/animalsoul.svg" data-i18n-alt="alticon" data-app="AnimalSoul" alt="Icône de l’application AnimalSoul" width="48" height="48">
+        <div class="body">
+          <h3><span class="name">AnimalSoul</span></h3>
+          <p data-i18n="d_as">Loup, renard ou colibri&nbsp;? Un quiz pour trouver l’animal qui vous ressemble.</p>
+        </div>
+      </a></li>
+
+      <li><a class="card" href="https://astromonde.dcyou.co">
+        <img src="./icons/astromonde.svg" data-i18n-alt="alticon" data-app="AstroMonde" alt="Icône de l’application AstroMonde" width="48" height="48">
+        <div class="body">
+          <h3><span class="name">AstroMonde</span></h3>
+          <p data-i18n="d_am">Votre signe astrologique dans dix traditions du monde, de l’occidentale à la maya.</p>
+        </div>
+      </a></li>
+
+      <li><a class="card" href="https://auracolor.dcyou.co">
+        <img src="./icons/auracolor.svg" data-i18n-alt="alticon" data-app="AuraColor" alt="Icône de l’application AuraColor" width="48" height="48">
+        <div class="body">
+          <h3><span class="name">AuraColor</span></h3>
+          <p data-i18n="d_ac">Un quiz pour révéler la couleur de votre aura et ce qu’elle raconte de vous.</p>
+        </div>
+      </a></li>
+
+      <li><a class="card" href="https://numerovie.dcyou.co">
+        <img src="./icons/numerovie.svg" data-i18n-alt="alticon" data-app="NuméroVie" alt="Icône de l’application NuméroVie" width="48" height="48">
+        <div class="body">
+          <h3><span class="name">NuméroVie</span></h3>
+          <p data-i18n="d_nv">Chemin de vie, expression, personnalité&nbsp;: votre numérologie à partir de votre nom et de votre date de naissance.</p>
+        </div>
+      </a></li>
+
+      <li><a class="card" href="https://oracle.dcyou.co">
+        <img src="./icons/oracle.svg" data-i18n-alt="alticon" data-app="Oracle" alt="Icône de l’application Oracle" width="48" height="48">
+        <div class="body">
+          <h3><span class="name">Oracle</span></h3>
+          <p data-i18n="d_or">Posez votre question, agitez la boule magique et tirez votre carte du jour.</p>
+        </div>
+      </a></li>
+
+      <li><a class="card" href="https://brainrottest.dcyou.co">
+        <img src="./icons/brainrottest.svg" data-i18n-alt="alticon" data-app="BrainRotTest" alt="Icône de l’application BrainRotTest" width="48" height="48">
+        <div class="body">
+          <h3><span class="name">BrainRotTest</span></h3>
+          <p data-i18n="d_br">Votre quotient BrainRot du jour. À ne surtout pas prendre au sérieux.</p>
+        </div>
+      </a></li>
+
+    </ul>
+  </section>
+
+  <!-- Les applications non sorties restent anonymes : ni nom, ni sujet, ni nombre.
+       Une seule carte teaser, traduite comme le reste de la page. -->
+  <section aria-labelledby="soon">
+    <h2 id="soon" data-i18n="h_soon">En préparation</h2>
+
+    <div class="card teaser">
+      <span class="glyph" aria-hidden="true">
+        <svg viewBox="0 0 48 48" width="48" height="48" focusable="false">
+          <rect x="1.5" y="1.5" width="45" height="45" rx="11" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-dasharray="7 6" opacity=".5"/>
+          <circle cx="15" cy="24" r="2.6" fill="currentColor"/>
+          <circle cx="24" cy="24" r="2.6" fill="currentColor"/>
+          <circle cx="33" cy="24" r="2.6" fill="currentColor"/>
+        </svg>
+      </span>
+      <div class="body">
+        <h3><span data-i18n="t_more">D’autres applications arrivent</span> <span class="badge" data-i18n="b_soon">bientôt</span></h3>
+        <p data-i18n="d_more">De nouvelles applications sont en préparation. Chacune se dévoile le jour de sa sortie.</p>
+      </div>
+    </div>
+
+  </section>
+
+  <footer>
+    <p id="ask">Une question, un bug, une idée&nbsp;? Écrivez à <a href="mailto:support@dcyou.co">support@dcyou.co</a>.</p>
+    <p><a href="https://dcyou.github.io/legal/" data-i18n="f_legal">Confidentialité et conditions d’utilisation, application par application.</a></p>
+  </footer>
+
+</div>
+
+<script>
+/* ------------------------------------------------------------------------
+   i18n — un seul fichier, sans dépendance.
+   La langue vient de localStorage, sinon du navigateur, sinon l'anglais.
+   Le français est la version de référence : c'est lui qui est écrit en dur
+   dans le HTML, donc c'est lui qui s'affiche si JavaScript est coupé.
+   ------------------------------------------------------------------------ */
+(function () {
+  "use strict";
+
+  /* code, nom natif, og:locale */
+  var LANGS = [
+    ["en", "English", "en_US"],
+    ["fr", "Français", "fr_FR"],
+    ["de", "Deutsch", "de_DE"],
+    ["it", "Italiano", "it_IT"],
+    ["es", "Español", "es_ES"],
+    ["pt", "Português", "pt_PT"],
+    ["pt-BR", "Português (BR)", "pt_BR"],
+    ["nl", "Nederlands", "nl_NL"],
+    ["sv", "Svenska", "sv_SE"],
+    ["da", "Dansk", "da_DK"],
+    ["nb", "Norsk", "nb_NO"],
+    ["fi", "Suomi", "fi_FI"],
+    ["pl", "Polski", "pl_PL"],
+    ["cs", "Čeština", "cs_CZ"],
+    ["hu", "Magyar", "hu_HU"],
+    ["ro", "Română", "ro_RO"],
+    ["el", "Ελληνικά", "el_GR"],
+    ["ru", "Русский", "ru_RU"],
+    ["uk", "Українська", "uk_UA"],
+    ["tr", "Türkçe", "tr_TR"],
+    ["ar", "العربية", "ar_AR"],
+    ["hi", "हिन्दी", "hi_IN"],
+    ["th", "ไทย", "th_TH"],
+    ["vi", "Tiếng Việt", "vi_VN"],
+    ["id", "Bahasa Indonesia", "id_ID"],
+    ["ms", "Bahasa Melayu", "ms_MY"],
+    ["zh", "中文", "zh_CN"],
+    ["zh-TW", "繁體中文", "zh_TW"],
+    ["ja", "日本語", "ja_JP"],
+    ["ko", "한국어", "ko_KR"]
+  ];
+
+  var RTL = { ar: 1 };
+
+  var T = {
+    "en": {"title": "dcyou — mobile apps", "desc": "dcyou — simple mobile apps, built solo by David Turbert. Quizzes, games and small everyday tools.", "tagline": "Simple mobile apps: one idea, a few screens, and it works.", "sub": "Designed and built solo by David Turbert. Most of them run straight in your browser, with nothing to install.", "h_now": "Try them now", "h_soon": "In the works", "b_soon": "soon", "b_stores": "coming to the stores", "langlabel": "Language", "alticon": "{app} app icon", "d_lc": "A collecting game: photograph the big letter signs around town and climb the leaderboard.", "d_dm": "Two first names, a score out of 100: love, friendship or passion compatibility.", "d_as": "Wolf, fox or hummingbird? A quiz to find the animal you take after.", "d_am": "Your star sign across ten traditions of the world, from Western to Maya.", "d_ac": "A quiz to reveal the colour of your aura and what it says about you.", "d_nv": "Life path, expression, personality: your numerology from your name and date of birth.", "d_or": "Ask your question, shake the magic ball and draw your card of the day.", "d_br": "Your BrainRot score for the day. Absolutely not to be taken seriously.", "t_more": "More apps are coming", "d_more": "New apps are in the works. Each one is revealed on the day it launches.", "f_ask": "A question, a bug, an idea? Write to {email}.", "f_legal": "Privacy policy and terms of use, app by app."},
+    "fr": {"title": "dcyou — applications mobiles", "desc": "dcyou — des applications mobiles simples, développées en solo par David Turbert. Quiz, jeux et petits outils du quotidien.", "tagline": "Des applications mobiles simples : une idée, quelques écrans, et ça marche.", "sub": "Conçues et développées en solo par David Turbert. La plupart s’essaient directement dans le navigateur, sans rien installer.", "h_now": "À essayer maintenant", "h_soon": "En préparation", "b_soon": "bientôt", "b_stores": "bientôt sur les stores", "langlabel": "Langue", "alticon": "Icône de l’application {app}", "d_lc": "Un jeu de collection : photographiez les grands panneaux-lettres des villes et grimpez au classement.", "d_dm": "Deux prénoms, un score sur 100 : compatibilité amoureuse, amicale ou passionnelle.", "d_as": "Loup, renard ou colibri ? Un quiz pour trouver l’animal qui vous ressemble.", "d_am": "Votre signe astrologique dans dix traditions du monde, de l’occidentale à la maya.", "d_ac": "Un quiz pour révéler la couleur de votre aura et ce qu’elle raconte de vous.", "d_nv": "Chemin de vie, expression, personnalité : votre numérologie à partir de votre nom et de votre date de naissance.", "d_or": "Posez votre question, agitez la boule magique et tirez votre carte du jour.", "d_br": "Votre quotient BrainRot du jour. À ne surtout pas prendre au sérieux.", "t_more": "D’autres applications arrivent", "d_more": "De nouvelles applications sont en préparation. Chacune se dévoile le jour de sa sortie.", "f_ask": "Une question, un bug, une idée ? Écrivez à {email}.", "f_legal": "Confidentialité et conditions d’utilisation, application par application."},
+    "de": {"title": "dcyou — mobile Apps", "desc": "dcyou — einfache mobile Apps, im Alleingang entwickelt von David Turbert. Quiz, Spiele und kleine Helfer für den Alltag.", "tagline": "Einfache mobile Apps: eine Idee, ein paar Screens, und es läuft.", "sub": "Allein entworfen und entwickelt von David Turbert. Die meisten kannst du direkt im Browser ausprobieren, ganz ohne Installation.", "h_now": "Jetzt ausprobieren", "h_soon": "In Arbeit", "b_soon": "bald", "b_stores": "bald in den Stores", "langlabel": "Sprache", "alticon": "App-Icon von {app}", "d_lc": "Ein Sammelspiel: Fotografiere die großen Buchstaben-Schriftzüge der Städte und klettere im Ranking nach oben.", "d_dm": "Zwei Vornamen, ein Score von 0 bis 100: Liebe, Freundschaft oder Leidenschaft.", "d_as": "Wolf, Fuchs oder Kolibri? Ein Quiz, das zeigt, welchem Tier du ähnelst.", "d_am": "Dein Sternzeichen in zehn Traditionen der Welt, von der westlichen bis zur Maya-Astrologie.", "d_ac": "Ein Quiz, das die Farbe deiner Aura zeigt und was sie über dich erzählt.", "d_nv": "Lebenszahl, Ausdruckszahl, Persönlichkeitszahl: deine Numerologie aus Name und Geburtsdatum.", "d_or": "Stell deine Frage, schüttle die magische Kugel und zieh deine Karte des Tages.", "d_br": "Dein BrainRot-Quotient des Tages. Bloß nicht ernst nehmen.", "t_more": "Weitere Apps kommen", "d_more": "Neue Apps sind in Arbeit. Jede wird am Tag ihres Erscheinens vorgestellt.", "f_ask": "Eine Frage, ein Bug, eine Idee? Schreib an {email}.", "f_legal": "Datenschutz und Nutzungsbedingungen, App für App."},
+    "it": {"title": "dcyou — app per smartphone", "desc": "dcyou — app semplici, sviluppate da solo da David Turbert. Quiz, giochi e piccoli strumenti di tutti i giorni.", "tagline": "App semplici: un'idea, qualche schermata, e funziona.", "sub": "Pensate e sviluppate da solo da David Turbert. La maggior parte si prova direttamente dal browser, senza installare niente.", "h_now": "Da provare adesso", "h_soon": "In preparazione", "b_soon": "presto", "b_stores": "presto sugli store", "langlabel": "Lingua", "alticon": "Icona dell'app {app}", "d_lc": "Un gioco da collezionisti: fotografa le grandi lettere monumentali delle città e scala la classifica.", "d_dm": "Due nomi, un punteggio su 100: affinità in amore, in amicizia o nella passione.", "d_as": "Lupo, volpe o colibrì? Un quiz per scoprire l'animale che ti somiglia.", "d_am": "Il tuo segno zodiacale in dieci tradizioni del mondo, dall'occidentale alla maya.", "d_ac": "Un quiz per scoprire il colore della tua aura e che cosa racconta di te.", "d_nv": "Sentiero di vita, espressione, personalità: la tua numerologia a partire dal nome e dalla data di nascita.", "d_or": "Fai la tua domanda, scuoti la sfera magica e pesca la carta del giorno.", "d_br": "Il tuo quoziente BrainRot del giorno. Da non prendere sul serio, per carità.", "t_more": "Altre app in arrivo", "d_more": "Nuove app sono in preparazione. Ognuna si svela il giorno del lancio.", "f_ask": "Una domanda, un bug, un'idea? Scrivi a {email}.", "f_legal": "Privacy e condizioni d'uso, app per app."},
+    "es": {"title": "dcyou — aplicaciones móviles", "desc": "dcyou — aplicaciones móviles sencillas, hechas en solitario por David Turbert. Tests, juegos y pequeñas herramientas del día a día.", "tagline": "Aplicaciones móviles sencillas: una idea, unas cuantas pantallas, y funciona.", "sub": "Diseñadas y desarrolladas en solitario por David Turbert. La mayoría se prueban directamente en el navegador, sin instalar nada.", "h_now": "Para probar ahora", "h_soon": "En preparación", "b_soon": "pronto", "b_stores": "pronto en las tiendas", "langlabel": "Idioma", "alticon": "Icono de la aplicación {app}", "d_lc": "Un juego de coleccionismo: fotografía las grandes letras monumentales de las ciudades y sube en la clasificación.", "d_dm": "Dos nombres, una puntuación sobre 100: compatibilidad amorosa, de amistad o pasional.", "d_as": "¿Lobo, zorro o colibrí? Un test para descubrir el animal que se te parece.", "d_am": "Tu signo astrológico en diez tradiciones del mundo, de la occidental a la maya.", "d_ac": "Un test para revelar el color de tu aura y lo que dice de ti.", "d_nv": "Camino de vida, expresión, personalidad: tu numerología a partir de tu nombre y tu fecha de nacimiento.", "d_or": "Haz tu pregunta, agita la bola mágica y saca tu carta del día.", "d_br": "Tu cociente BrainRot del día. Ni se te ocurra tomártelo en serio.", "t_more": "Llegan más aplicaciones", "d_more": "Hay nuevas aplicaciones en preparación. Cada una se desvela el día de su lanzamiento.", "f_ask": "¿Una pregunta, un fallo, una idea? Escribe a {email}.", "f_legal": "Privacidad y condiciones de uso, aplicación por aplicación."},
+    "pt": {"title": "dcyou — aplicações móveis", "desc": "dcyou — aplicações móveis simples, criadas a solo por David Turbert. Testes, jogos e pequenas ferramentas do dia a dia.", "tagline": "Aplicações móveis simples: uma ideia, alguns ecrãs, e funciona.", "sub": "Pensadas e desenvolvidas a solo por David Turbert. A maioria experimenta-se logo no navegador, sem instalar nada.", "h_now": "Para experimentar agora", "h_soon": "Em preparação", "b_soon": "em breve", "b_stores": "em breve nas lojas", "langlabel": "Idioma", "alticon": "Ícone da aplicação {app}", "d_lc": "Um jogo de coleção: fotografa as grandes letras monumentais das cidades e sobe na classificação.", "d_dm": "Dois nomes, uma pontuação de 0 a 100: compatibilidade amorosa, de amizade ou passional.", "d_as": "Lobo, raposa ou colibri? Um teste para descobrires o animal que se parece contigo.", "d_am": "O teu signo em dez tradições do mundo, da ocidental à maia.", "d_ac": "Um teste para revelar a cor da tua aura e o que ela diz sobre ti.", "d_nv": "Caminho de vida, expressão, personalidade: a tua numerologia a partir do nome e da data de nascimento.", "d_or": "Faz a tua pergunta, agita a bola mágica e tira a carta do dia.", "d_br": "O teu quociente BrainRot do dia. Não leves nada disto a sério.", "t_more": "Mais aplicações a caminho", "d_more": "Novas aplicações estão em preparação. Cada uma revela-se no dia do lançamento.", "f_ask": "Uma pergunta, um erro, uma ideia? Escreve para {email}.", "f_legal": "Privacidade e condições de utilização, aplicação a aplicação."},
+    "pt-BR": {"title": "dcyou — aplicativos para celular", "desc": "dcyou — aplicativos de celular simples, feitos sozinho por David Turbert. Quizzes, jogos e pequenas ferramentas do dia a dia.", "tagline": "Aplicativos simples: uma ideia, algumas telas, e funciona.", "sub": "Pensados e desenvolvidos sozinho por David Turbert. A maioria dá para testar direto no navegador, sem instalar nada.", "h_now": "Para testar agora", "h_soon": "Em preparação", "b_soon": "em breve", "b_stores": "em breve nas lojas", "langlabel": "Idioma", "alticon": "Ícone do aplicativo {app}", "d_lc": "Um jogo de colecionar: fotografe os letreiros gigantes com o nome das cidades e suba no ranking.", "d_dm": "Dois nomes, uma nota de 0 a 100: compatibilidade no amor, na amizade ou na paixão.", "d_as": "Lobo, raposa ou beija-flor? Um quiz para descobrir o animal com a sua cara.", "d_am": "O seu signo em dez tradições do mundo, da ocidental à maia.", "d_ac": "Um quiz para revelar a cor da sua aura e o que ela diz de você.", "d_nv": "Caminho de vida, expressão, personalidade: a sua numerologia a partir do nome e da data de nascimento.", "d_or": "Faça a sua pergunta, chacoalhe a bola mágica e tire a carta do dia.", "d_br": "O seu nível de BrainRot do dia. Não leve a sério de jeito nenhum.", "t_more": "Mais aplicativos a caminho", "d_more": "Novos aplicativos estão em preparação. Cada um é revelado no dia do lançamento.", "f_ask": "Uma dúvida, um bug, uma ideia? Escreva para {email}.", "f_legal": "Privacidade e termos de uso, aplicativo por aplicativo."},
+    "nl": {"title": "dcyou — mobiele apps", "desc": "dcyou — eenvoudige mobiele apps, in zijn eentje gemaakt door David Turbert. Quizzen, spelletjes en kleine tools voor elke dag.", "tagline": "Eenvoudige mobiele apps: een idee, een paar schermen, en het werkt.", "sub": "In zijn eentje bedacht en gebouwd door David Turbert. De meeste probeer je meteen in de browser, zonder iets te installeren.", "h_now": "Nu te proberen", "h_soon": "In de maak", "b_soon": "binnenkort", "b_stores": "binnenkort in de stores", "langlabel": "Taal", "alticon": "App-icoon van {app}", "d_lc": "Een verzamelspel: fotografeer de grote stadsletters op straat en klim in de ranglijst.", "d_dm": "Twee voornamen, een score van 0 tot 100: liefde, vriendschap of passie.", "d_as": "Wolf, vos of kolibrie? Een quiz om te ontdekken welk dier bij je past.", "d_am": "Je sterrenbeeld in tien tradities van de wereld, van de westerse tot die van de Maya's.", "d_ac": "Een quiz die de kleur van je aura onthult en wat die over je zegt.", "d_nv": "Levenspad, expressie, persoonlijkheid: je numerologie op basis van je naam en geboortedatum.", "d_or": "Stel je vraag, schud de magische bal en trek je kaart van de dag.", "d_br": "Je BrainRot-quotiënt van vandaag. Vooral niet serieus nemen.", "t_more": "Er komen meer apps", "d_more": "Nieuwe apps zijn in de maak. Elke app wordt onthuld op de dag dat ze verschijnt.", "f_ask": "Een vraag, een bug, een idee? Mail naar {email}.", "f_legal": "Privacy en gebruiksvoorwaarden, per app."},
+    "sv": {"title": "dcyou — mobilappar", "desc": "dcyou — enkla mobilappar, byggda på egen hand av David Turbert. Quiz, spel och små verktyg för vardagen.", "tagline": "Enkla mobilappar: en idé, några skärmar, och det funkar.", "sub": "Formgivna och byggda på egen hand av David Turbert. De flesta testar du direkt i webbläsaren, utan att installera något.", "h_now": "Testa nu", "h_soon": "På gång", "b_soon": "snart", "b_stores": "snart i app-butikerna", "langlabel": "Språk", "alticon": "Appikon för {app}", "d_lc": "Ett samlarspel: fotografera städernas stora bokstavsskyltar och klättra på topplistan.", "d_dm": "Två förnamn, ett resultat mellan 0 och 100: kärlek, vänskap eller passion.", "d_as": "Varg, räv eller kolibri? Ett quiz som hittar djuret som liknar dig.", "d_am": "Ditt stjärntecken i tio traditioner världen över, från den västerländska till mayafolkets.", "d_ac": "Ett quiz som avslöjar din auras färg och vad den säger om dig.", "d_nv": "Livsväg, uttryck, personlighet: din numerologi utifrån ditt namn och ditt födelsedatum.", "d_or": "Ställ din fråga, skaka den magiska kulan och dra dagens kort.", "d_br": "Din BrainRot-kvot för dagen. Ska absolut inte tas på allvar.", "t_more": "Fler appar är på gång", "d_more": "Nya appar är under utveckling. Varje app avslöjas den dag den släpps.", "f_ask": "En fråga, en bugg, en idé? Skriv till {email}.", "f_legal": "Integritetspolicy och användarvillkor, app för app."},
+    "da": {"title": "dcyou — mobilapps", "desc": "dcyou — enkle mobilapps, lavet på egen hånd af David Turbert. Quizzer, spil og små hverdagsværktøjer.", "tagline": "Enkle mobilapps: en idé, et par skærme, og så virker det.", "sub": "Designet og udviklet på egen hånd af David Turbert. De fleste kan du prøve direkte i browseren, uden at installere noget.", "h_now": "Prøv nu", "h_soon": "På vej", "b_soon": "snart", "b_stores": "snart i app-butikkerne", "langlabel": "Sprog", "alticon": "App-ikon for {app}", "d_lc": "Et samlerspil: fotografér byernes store bogstavskilte, og kravl op ad ranglisten.", "d_dm": "To fornavne, et resultat fra 0 til 100: kærlighed, venskab eller passion.", "d_as": "Ulv, ræv eller kolibri? En quiz, der finder det dyr, du ligner.", "d_am": "Dit stjernetegn i ti traditioner verden over, fra den vestlige til mayaernes.", "d_ac": "En quiz, der afslører din auras farve, og hvad den fortæller om dig.", "d_nv": "Livsvej, udtryk, personlighed: din numerologi ud fra dit navn og din fødselsdato.", "d_or": "Stil dit spørgsmål, ryst den magiske kugle, og træk dagens kort.", "d_br": "Din BrainRot-kvotient for i dag. Skal absolut ikke tages alvorligt.", "t_more": "Flere apps er på vej", "d_more": "Nye apps er under udvikling. Hver enkelt afsløres den dag, den udkommer.", "f_ask": "Et spørgsmål, en fejl, en idé? Skriv til {email}.", "f_legal": "Privatliv og brugsbetingelser, app for app."},
+    "nb": {"title": "dcyou — mobilapper", "desc": "dcyou — enkle mobilapper, laget på egen hånd av David Turbert. Quizer, spill og små hverdagsverktøy.", "tagline": "Enkle mobilapper: en idé, noen skjermer, og det virker.", "sub": "Designet og utviklet på egen hånd av David Turbert. De fleste kan du prøve rett i nettleseren, uten å installere noe.", "h_now": "Prøv nå", "h_soon": "På gang", "b_soon": "snart", "b_stores": "snart i app-butikkene", "langlabel": "Språk", "alticon": "App-ikon for {app}", "d_lc": "Et samlespill: ta bilder av de store bokstavskiltene i byene, og klatre på resultatlista.", "d_dm": "To fornavn, en score fra 0 til 100: kjærlighet, vennskap eller lidenskap.", "d_as": "Ulv, rev eller kolibri? En quiz som finner dyret som ligner på deg.", "d_am": "Stjernetegnet ditt i ti tradisjoner verden over, fra den vestlige til mayaenes.", "d_ac": "En quiz som avslører fargen på auraen din, og hva den sier om deg.", "d_nv": "Livsvei, uttrykk, personlighet: numerologien din ut fra navnet og fødselsdatoen din.", "d_or": "Still spørsmålet ditt, rist den magiske kula og trekk dagens kort.", "d_br": "BrainRot-kvotienten din for i dag. Skal absolutt ikke tas seriøst.", "t_more": "Flere apper er på gang", "d_more": "Nye apper er under utvikling. Hver enkelt avsløres den dagen den slippes.", "f_ask": "Et spørsmål, en feil, en idé? Skriv til {email}.", "f_legal": "Personvern og bruksvilkår, app for app."},
+    "fi": {"title": "dcyou — mobiilisovellukset", "desc": "dcyou — yksinkertaisia mobiilisovelluksia, jotka David Turbert tekee yksin. Visoja, pelejä ja pieniä arjen työkaluja.", "tagline": "Yksinkertaisia mobiilisovelluksia: idea, muutama näkymä, ja se toimii.", "sub": "David Turbert suunnittelee ja koodaa ne yksin. Useimpia voit kokeilla suoraan selaimessa, ilman asennusta.", "h_now": "Kokeile nyt", "h_soon": "Tekeillä", "b_soon": "pian", "b_stores": "pian kaupoissa", "langlabel": "Kieli", "alticon": "Sovelluksen {app} kuvake", "d_lc": "Keräilypeli: valokuvaa kaupunkien isot kirjainkyltit ja kiipeä tuloslistalla.", "d_dm": "Kaksi etunimeä, tulos nollasta sataan: rakkaus, ystävyys vai intohimo.", "d_as": "Susi, kettu vai kolibri? Visa, joka etsii sinua muistuttavan eläimen.", "d_am": "Tähtimerkkisi kymmenessä maailman perinteessä, länsimaisesta mayojen astrologiaan.", "d_ac": "Visa, joka paljastaa aurasi värin ja sen, mitä se kertoo sinusta.", "d_nv": "Elämänpolku, ilmaisu, persoonallisuus: numerologiasi nimesi ja syntymäaikasi perusteella.", "d_or": "Esitä kysymyksesi, ravista taikapalloa ja nosta päivän kortti.", "d_br": "Päivän BrainRot-kertoimesi. Tätä ei kannata ottaa vakavasti.", "t_more": "Lisää sovelluksia tulossa", "d_more": "Uusia sovelluksia on tekeillä. Jokainen paljastetaan julkaisupäivänään.", "f_ask": "Kysymys, bugi tai idea? Kirjoita osoitteeseen {email}.", "f_legal": "Tietosuoja ja käyttöehdot, sovellus kerrallaan."},
+    "pl": {"title": "dcyou — aplikacje mobilne", "desc": "dcyou — proste aplikacje mobilne, tworzone w pojedynkę przez Davida Turberta. Quizy, gry i drobne narzędzia na co dzień.", "tagline": "Proste aplikacje mobilne: pomysł, kilka ekranów i działa.", "sub": "Zaprojektowane i napisane w pojedynkę przez Davida Turberta. Większość sprawdzisz od razu w przeglądarce, bez instalowania.", "h_now": "Wypróbuj teraz", "h_soon": "W przygotowaniu", "b_soon": "wkrótce", "b_stores": "wkrótce w sklepach", "langlabel": "Język", "alticon": "Ikona aplikacji {app}", "d_lc": "Gra kolekcjonerska: fotografuj wielkie litery ustawione w miastach i pnij się w rankingu.", "d_dm": "Dwa imiona, wynik od 0 do 100: miłość, przyjaźń albo namiętność.", "d_as": "Wilk, lis czy koliber? Quiz, który znajdzie zwierzę podobne do ciebie.", "d_am": "Twój znak zodiaku w dziesięciu tradycjach świata, od zachodniej po majańską.", "d_ac": "Quiz, który odsłoni kolor twojej aury i to, co mówi o tobie.", "d_nv": "Droga życia, ekspresja, osobowość: twoja numerologia z imienia i daty urodzenia.", "d_or": "Zadaj pytanie, potrząśnij magiczną kulą i wyciągnij kartę dnia.", "d_br": "Twój dzisiejszy współczynnik BrainRot. Tylko nie bierz tego na poważnie.", "t_more": "Kolejne aplikacje w drodze", "d_more": "Nowe aplikacje są w przygotowaniu. Każda odsłoni się w dniu premiery.", "f_ask": "Pytanie, błąd, pomysł? Napisz na {email}.", "f_legal": "Prywatność i warunki korzystania, aplikacja po aplikacji."},
+    "cs": {"title": "dcyou — mobilní aplikace", "desc": "dcyou — jednoduché mobilní aplikace, které sám vytváří David Turbert. Kvízy, hry a drobné pomocníky pro každý den.", "tagline": "Jednoduché mobilní aplikace: nápad, pár obrazovek a funguje to.", "sub": "Sám je navrhuje i programuje David Turbert. Většinu si vyzkoušíte rovnou v prohlížeči, bez instalace.", "h_now": "Vyzkoušet hned", "h_soon": "Připravujeme", "b_soon": "brzy", "b_stores": "brzy v obchodech", "langlabel": "Jazyk", "alticon": "Ikona aplikace {app}", "d_lc": "Sběratelská hra: fotografujte velké nápisy z písmen ve městech a stoupejte v žebříčku.", "d_dm": "Dvě jména, výsledek od 0 do 100: láska, přátelství, nebo vášeň.", "d_as": "Vlk, liška, nebo kolibřík? Kvíz, který najde zvíře podobné vám.", "d_am": "Vaše znamení v deseti tradicích světa, od západní po mayskou.", "d_ac": "Kvíz, který odhalí barvu vaší aury a co o vás vypovídá.", "d_nv": "Životní cesta, výraz, osobnost: vaše numerologie ze jména a data narození.", "d_or": "Položte otázku, zatřeste kouzelnou koulí a vytáhněte kartu dne.", "d_br": "Váš dnešní koeficient BrainRot. Rozhodně to neberte vážně.", "t_more": "Chystají se další aplikace", "d_more": "Nové aplikace se připravují. Každou odhalíme v den vydání.", "f_ask": "Dotaz, chyba, nápad? Napište na {email}.", "f_legal": "Soukromí a podmínky použití, aplikaci po aplikaci."},
+    "hu": {"title": "dcyou — mobilalkalmazások", "desc": "dcyou — egyszerű mobilalkalmazások, egyedül fejleszti David Turbert. Kvízek, játékok és apró mindennapi eszközök.", "tagline": "Egyszerű mobilalkalmazások: egy ötlet, néhány képernyő, és működik.", "sub": "Egyedül tervezi és fejleszti David Turbert. A legtöbbet egyből kipróbálhatod a böngészőben, telepítés nélkül.", "h_now": "Próbáld ki most", "h_soon": "Készül", "b_soon": "hamarosan", "b_stores": "hamarosan az áruházakban", "langlabel": "Nyelv", "alticon": "A(z) {app} alkalmazás ikonja", "d_lc": "Gyűjtögetős játék: fényképezd le a városok nagy betűtábláit, és kapaszkodj feljebb a ranglistán.", "d_dm": "Két keresztnév, egy pontszám százból: szerelem, barátság vagy szenvedély.", "d_as": "Farkas, róka vagy kolibri? Kvíz, ami megkeresi a hozzád illő állatot.", "d_am": "A csillagjegyed a világ tíz hagyományában, a nyugatitól a majáig.", "d_ac": "Kvíz, ami felfedi az aurád színét, és hogy mit mesél rólad.", "d_nv": "Életút, kifejezés, személyiség: a numerológiád a nevedből és a születési dátumodból.", "d_or": "Tedd fel a kérdésed, rázd meg a jóslógömböt, és húzd ki a napi kártyád.", "d_br": "A mai BrainRot-hányadosod. Véletlenül se vedd komolyan.", "t_more": "Újabb alkalmazások érkeznek", "d_more": "Új alkalmazások készülnek. Mindegyik a megjelenése napján mutatkozik be.", "f_ask": "Kérdés, hiba, ötlet? Írj a {email} címre.", "f_legal": "Adatvédelem és felhasználási feltételek, alkalmazásonként."},
+    "ro": {"title": "dcyou — aplicații mobile", "desc": "dcyou — aplicații mobile simple, făcute pe cont propriu de David Turbert. Quizuri, jocuri și mici unelte de zi cu zi.", "tagline": "Aplicații mobile simple: o idee, câteva ecrane și funcționează.", "sub": "Gândite și scrise pe cont propriu de David Turbert. Pe cele mai multe le încerci direct în browser, fără să instalezi nimic.", "h_now": "De încercat acum", "h_soon": "În pregătire", "b_soon": "în curând", "b_stores": "în curând în magazine", "langlabel": "Limbă", "alticon": "Pictograma aplicației {app}", "d_lc": "Un joc de colecție: fotografiază literele uriașe din orașe și urcă în clasament.", "d_dm": "Două prenume, un scor de la 0 la 100: iubire, prietenie sau pasiune.", "d_as": "Lup, vulpe sau colibri? Un test care găsește animalul care ți se potrivește.", "d_am": "Zodia ta în zece tradiții ale lumii, de la cea occidentală la cea mayașă.", "d_ac": "Un test care îți dezvăluie culoarea aurei și ce spune ea despre tine.", "d_nv": "Calea vieții, expresia, personalitatea: numerologia ta după nume și data nașterii.", "d_or": "Pune-ți întrebarea, scutură bila magică și trage cartea zilei.", "d_br": "Coeficientul tău BrainRot de azi. Să nu-l iei în serios.", "t_more": "Vin și alte aplicații", "d_more": "Aplicații noi sunt în pregătire. Fiecare se dezvăluie în ziua lansării.", "f_ask": "O întrebare, un bug, o idee? Scrie la {email}.", "f_legal": "Confidențialitate și termeni de utilizare, aplicație cu aplicație."},
+    "el": {"title": "dcyou — εφαρμογές για κινητά", "desc": "dcyou — απλές εφαρμογές για κινητά, που τις φτιάχνει μόνος του ο David Turbert. Κουίζ, παιχνίδια και μικρά εργαλεία της καθημερινότητας.", "tagline": "Απλές εφαρμογές για κινητά: μια ιδέα, λίγες οθόνες, και δουλεύει.", "sub": "Τις σχεδιάζει και τις φτιάχνει μόνος του ο David Turbert. Τις περισσότερες μπορείτε να τις δοκιμάσετε κατευθείαν στον browser, χωρίς να εγκαταστήσετε τίποτα.", "h_now": "Δοκιμάστε τώρα", "h_soon": "Στα σκαριά", "b_soon": "σύντομα", "b_stores": "σύντομα στα stores", "langlabel": "Γλώσσα", "alticon": "Εικονίδιο της εφαρμογής {app}", "d_lc": "Ένα παιχνίδι συλλογής: φωτογραφίστε τα μεγάλα γράμματα-γλυπτά με τα ονόματα των πόλεων και ανεβείτε στην κατάταξη.", "d_dm": "Δύο ονόματα, μια βαθμολογία στα 100: ερωτική, φιλική ή παθιασμένη συμβατότητα.", "d_as": "Λύκος, αλεπού ή κολιμπρί; Ένα κουίζ για να βρείτε το ζώο που σας μοιάζει.", "d_am": "Το ζώδιό σας σε δέκα παραδόσεις του κόσμου, από τη δυτική ως τη μάγια.", "d_ac": "Ένα κουίζ που αποκαλύπτει το χρώμα της αύρας σας και τι λέει για εσάς.", "d_nv": "Μονοπάτι ζωής, έκφραση, προσωπικότητα: η αριθμολογία σας από το όνομα και την ημερομηνία γέννησής σας.", "d_or": "Κάντε την ερώτησή σας, κουνήστε τη μαγική μπάλα και τραβήξτε την κάρτα της ημέρας.", "d_br": "Ο δείκτης BrainRot σας για σήμερα. Μην το πάρετε καθόλου στα σοβαρά.", "t_more": "Έρχονται κι άλλες εφαρμογές", "d_more": "Νέες εφαρμογές είναι στα σκαριά. Καθεμιά αποκαλύπτεται την ημέρα της κυκλοφορίας της.", "f_ask": "Μια ερώτηση, ένα bug, μια ιδέα; Γράψτε στο {email}.", "f_legal": "Απόρρητο και όροι χρήσης, για κάθε εφαρμογή ξεχωριστά."},
+    "ru": {"title": "dcyou — мобильные приложения", "desc": "dcyou — простые мобильные приложения, которые David Turbert делает в одиночку. Тесты, игры и небольшие инструменты на каждый день.", "tagline": "Простые мобильные приложения: идея, несколько экранов — и работает.", "sub": "Придумывает и разрабатывает всё David Turbert, один. Большинство можно попробовать прямо в браузере, ничего не устанавливая.", "h_now": "Попробовать сейчас", "h_soon": "В работе", "b_soon": "скоро", "b_stores": "скоро в сторах", "langlabel": "Язык", "alticon": "Иконка приложения {app}", "d_lc": "Игра-коллекция: фотографируйте большие объёмные буквы с названиями городов и поднимайтесь в рейтинге.", "d_dm": "Два имени, оценка от 0 до 100: совместимость в любви, дружбе или страсти.", "d_as": "Волк, лиса или колибри? Тест, который подскажет, на какое животное вы похожи.", "d_am": "Ваш знак зодиака в десяти традициях мира — от западной до майя.", "d_ac": "Тест, который покажет цвет вашей ауры и что он о вас говорит.", "d_nv": "Число жизненного пути, число выражения, число личности: нумерология по имени и дате рождения.", "d_or": "Задайте вопрос, встряхните волшебный шар и вытяните карту дня.", "d_br": "Ваш коэффициент BrainRot на сегодня. Всерьёз лучше не воспринимать.", "t_more": "Скоро новые приложения", "d_more": "Новые приложения в работе. Каждое раскрывается в день выхода.", "f_ask": "Вопрос, ошибка, идея? Напишите на {email}.", "f_legal": "Конфиденциальность и условия использования — для каждого приложения отдельно."},
+    "uk": {"title": "dcyou — мобільні застосунки", "desc": "dcyou — прості мобільні застосунки, які David Turbert робить сам. Тести, ігри та невеликі інструменти на щодень.", "tagline": "Прості мобільні застосунки: ідея, кілька екранів — і працює.", "sub": "Задумує й розробляє все David Turbert, сам. Більшість можна спробувати просто у браузері, нічого не встановлюючи.", "h_now": "Спробувати зараз", "h_soon": "У роботі", "b_soon": "скоро", "b_stores": "скоро в сторах", "langlabel": "Мова", "alticon": "Іконка застосунку {app}", "d_lc": "Гра-колекція: фотографуйте великі об'ємні літери з назвами міст і піднімайтеся в рейтингу.", "d_dm": "Два імені, оцінка від 0 до 100: сумісність у коханні, дружбі чи пристрасті.", "d_as": "Вовк, лисиця чи колібрі? Тест, який підкаже, на яку тварину ви схожі.", "d_am": "Ваш знак зодіаку в десяти традиціях світу — від західної до майя.", "d_ac": "Тест, який покаже колір вашої аури і що він про вас говорить.", "d_nv": "Число життєвого шляху, число вираження, число особистості: нумерологія за іменем і датою народження.", "d_or": "Поставте запитання, струсіть чарівну кулю й витягніть карту дня.", "d_br": "Ваш коефіцієнт BrainRot на сьогодні. Сприймати серйозно точно не варто.", "t_more": "Невдовзі нові застосунки", "d_more": "Нові застосунки в роботі. Кожен розкривається в день виходу.", "f_ask": "Питання, помилка, ідея? Напишіть на {email}.", "f_legal": "Конфіденційність та умови користування — для кожного застосунку окремо."},
+    "tr": {"title": "dcyou — mobil uygulamalar", "desc": "dcyou — David Turbert'in tek başına geliştirdiği sade mobil uygulamalar. Testler, oyunlar ve günlük küçük araçlar.", "tagline": "Sade mobil uygulamalar: bir fikir, birkaç ekran, çalışıyor işte.", "sub": "Tasarımı da kodu da David Turbert'e ait, tek başına. Çoğunu hiçbir şey kurmadan doğrudan tarayıcıda deneyebilirsin.", "h_now": "Şimdi dene", "h_soon": "Hazırlanıyor", "b_soon": "yakında", "b_stores": "yakında mağazalarda", "langlabel": "Dil", "alticon": "{app} uygulamasının simgesi", "d_lc": "Bir koleksiyon oyunu: şehirlerin adını oluşturan dev harfleri fotoğrafla, sıralamada yüksel.", "d_dm": "İki isim, 100 üzerinden bir puan: aşk, arkadaşlık ya da tutku uyumu.", "d_as": "Kurt, tilki ya da sinek kuşu? Sana benzeyen hayvanı bulan bir test.", "d_am": "Burcun, dünyanın on ayrı geleneğinde: Batı'dan Maya'ya.", "d_ac": "Auranın rengini ve bunun seninle ilgili anlattıklarını ortaya çıkaran bir test.", "d_nv": "Yaşam yolu, ifade, kişilik: adından ve doğum tarihinden çıkan numerolojin.", "d_or": "Sorunu sor, sihirli küreyi salla ve günün kartını çek.", "d_br": "Günlük BrainRot katsayın. Sakın ciddiye alma.", "t_more": "Yeni uygulamalar geliyor", "d_more": "Yeni uygulamalar hazırlanıyor. Her biri çıktığı gün tanıtılacak.", "f_ask": "Bir soru, bir hata, bir fikir mi? {email} adresine yaz.", "f_legal": "Gizlilik ve kullanım koşulları, her uygulama için ayrı ayrı."},
+    "ar": {"title": "dcyou — تطبيقات للهاتف", "desc": "dcyou — تطبيقات بسيطة للهاتف، يطوّرها David Turbert بمفرده. اختبارات وألعاب وأدوات صغيرة لكل يوم.", "tagline": "تطبيقات بسيطة للهاتف: فكرة، بضع شاشات، وتشتغل.", "sub": "صمّمها وطوّرها David Turbert بمفرده. معظمها تجرّبه مباشرة في المتصفّح، دون تثبيت أي شيء.", "h_now": "جرّبها الآن", "h_soon": "قيد الإعداد", "b_soon": "قريبًا", "b_stores": "قريبًا في المتاجر", "langlabel": "اللغة", "alticon": "أيقونة تطبيق {app}", "d_lc": "لعبة جمع: صوّر الحروف العملاقة المنصوبة في المدن، وتسلّق لوحة الترتيب.", "d_dm": "اسمان، ونتيجة من 100: توافق في الحب أو الصداقة أو الشغف.", "d_as": "ذئب أم ثعلب أم طائر طنّان؟ اختبار يكشف الحيوان الذي يشبهك.", "d_am": "برجك في عشرة تقاليد فلكية حول العالم، من الغربي إلى المايا.", "d_ac": "اختبار يكشف لون هالتك وما تقوله عنك.", "d_nv": "مسار الحياة، التعبير، الشخصية: أرقامك انطلاقًا من اسمك وتاريخ ميلادك.", "d_or": "اطرح سؤالك، هزّ الكرة السحرية، واسحب بطاقة يومك.", "d_br": "نسبة BrainRot عندك اليوم. لا تأخذها على محمل الجدّ أبدًا.", "t_more": "تطبيقات أخرى في الطريق", "d_more": "تطبيقات جديدة قيد الإعداد. يُكشف عن كلٍّ منها يوم إطلاقه.", "f_ask": "سؤال أو خلل أو فكرة؟ اكتب إلى {email}.", "f_legal": "الخصوصية وشروط الاستخدام، تطبيقًا تطبيقًا."},
+    "hi": {"title": "dcyou — मोबाइल ऐप्स", "desc": "dcyou — सादे मोबाइल ऐप्स, जिन्हें David Turbert अकेले बनाते हैं। क्विज़, गेम और रोज़मर्रा के छोटे टूल।", "tagline": "सादे मोबाइल ऐप्स: एक आइडिया, कुछ स्क्रीन, और काम बन जाता है।", "sub": "सब कुछ David Turbert ने अकेले सोचा और बनाया है। ज़्यादातर ऐप्स बिना कुछ इंस्टॉल किए सीधे ब्राउज़र में आज़माए जा सकते हैं।", "h_now": "अभी आज़माएँ", "h_soon": "तैयारी में", "b_soon": "जल्द", "b_stores": "जल्द स्टोर पर", "langlabel": "भाषा", "alticon": "{app} ऐप का आइकॉन", "d_lc": "एक कलेक्शन गेम: शहरों में लगे बड़े अक्षर-साइनबोर्ड की तस्वीरें लें और लीडरबोर्ड पर ऊपर चढ़ें।", "d_dm": "दो नाम, 100 में से एक स्कोर: प्यार, दोस्ती या जुनून की कम्पैटिबिलिटी।", "d_as": "भेड़िया, लोमड़ी या हमिंगबर्ड? एक क्विज़ जो बताए कि आप किस जानवर जैसे हैं।", "d_am": "दुनिया की दस परंपराओं में आपकी राशि, पश्चिमी से लेकर माया तक।", "d_ac": "एक क्विज़ जो आपकी ऑरा का रंग बताए और वो आपके बारे में क्या कहता है।", "d_nv": "जीवन पथ, नामांक और व्यक्तित्व अंक: आपके नाम और जन्म तारीख़ से आपकी अंकज्योतिष।", "d_or": "अपना सवाल पूछें, जादुई गेंद हिलाएँ और दिन का कार्ड निकालें।", "d_br": "आज का आपका BrainRot स्कोर। इसे बिल्कुल भी गंभीरता से न लें।", "t_more": "और ऐप्स आ रहे हैं", "d_more": "नए ऐप्स तैयारी में हैं। हर ऐप अपने लॉन्च के दिन ही सामने आएगा।", "f_ask": "कोई सवाल, कोई बग, कोई आइडिया? {email} पर लिखिए।", "f_legal": "हर ऐप की निजता नीति और उपयोग की शर्तें।"},
+    "th": {"title": "dcyou — แอปมือถือ", "desc": "dcyou — แอปมือถือเรียบง่าย พัฒนาคนเดียวโดย David Turbert มีทั้งควิซ เกม และเครื่องมือเล็ก ๆ สำหรับชีวิตประจำวัน", "tagline": "แอปมือถือเรียบง่าย ไอเดียหนึ่งอย่าง หน้าจอไม่กี่หน้า แล้วก็ใช้ได้จริง", "sub": "ออกแบบและพัฒนาคนเดียวโดย David Turbert ส่วนใหญ่ลองเล่นได้เลยในเบราว์เซอร์ ไม่ต้องติดตั้งอะไร", "h_now": "ลองเลยตอนนี้", "h_soon": "กำลังทำอยู่", "b_soon": "เร็ว ๆ นี้", "b_stores": "เร็ว ๆ นี้บนสโตร์", "langlabel": "ภาษา", "alticon": "ไอคอนแอป {app}", "d_lc": "เกมสะสม ถ่ายรูปป้ายตัวอักษรยักษ์กลางเมือง แล้วไต่อันดับขึ้นไป", "d_dm": "สองชื่อ คะแนนเต็ม 100 ดูความเข้ากันทั้งแบบคนรัก เพื่อน และแบบเร่าร้อน", "d_as": "หมาป่า สุนัขจิ้งจอก หรือนกฮัมมิงเบิร์ด ควิซหาสัตว์ที่เหมือนคุณที่สุด", "d_am": "ราศีของคุณในสิบธรรมเนียมโหราศาสตร์ทั่วโลก ตั้งแต่ตะวันตกจนถึงมายา", "d_ac": "ควิซเผยสีออร่าของคุณ และบอกว่าสีนั้นสะท้อนอะไรในตัวคุณ", "d_nv": "เส้นทางชีวิต การแสดงออก บุคลิกภาพ ตัวเลขศาสตร์ของคุณจากชื่อและวันเกิด", "d_or": "ตั้งคำถาม เขย่าลูกบอลวิเศษ แล้วเปิดไพ่ประจำวัน", "d_br": "ค่าความ BrainRot ของคุณวันนี้ อย่าไปจริงจังกับมันเชียว", "t_more": "มีแอปใหม่กำลังมา", "d_more": "แอปใหม่กำลังพัฒนาอยู่ แต่ละแอปจะเผยโฉมในวันที่เปิดตัว", "f_ask": "มีคำถาม เจอบั๊ก หรือมีไอเดียใช่ไหม เขียนมาที่ {email}", "f_legal": "นโยบายความเป็นส่วนตัวและเงื่อนไขการใช้งาน แยกตามแต่ละแอป"},
+    "vi": {"title": "dcyou — ứng dụng di động", "desc": "dcyou — những ứng dụng di động đơn giản, do David Turbert tự làm một mình. Quiz, trò chơi và vài công cụ nhỏ cho ngày thường.", "tagline": "Ứng dụng di động đơn giản: một ý tưởng, vài màn hình, và thế là chạy.", "sub": "Do David Turbert một mình thiết kế và lập trình. Phần lớn dùng thử được ngay trên trình duyệt, không cần cài gì.", "h_now": "Thử ngay", "h_soon": "Đang chuẩn bị", "b_soon": "sắp có", "b_stores": "sắp lên store", "langlabel": "Ngôn ngữ", "alticon": "Biểu tượng ứng dụng {app}", "d_lc": "Trò chơi sưu tầm: chụp những bảng chữ cái khổng lồ giữa lòng thành phố và leo lên bảng xếp hạng.", "d_dm": "Hai cái tên, một điểm số trên 100: hợp nhau trong tình yêu, tình bạn hay đam mê.", "d_as": "Sói, cáo hay chim ruồi? Một bài quiz tìm con vật giống bạn nhất.", "d_am": "Cung hoàng đạo của bạn trong mười truyền thống trên thế giới, từ phương Tây đến Maya.", "d_ac": "Một bài quiz hé lộ màu hào quang của bạn và điều nó nói về bạn.", "d_nv": "Đường đời, sứ mệnh, nhân cách: thần số học của bạn từ họ tên và ngày sinh.", "d_or": "Đặt câu hỏi, lắc quả cầu ma thuật và rút lá bài của ngày.", "d_br": "Chỉ số BrainRot hôm nay của bạn. Tuyệt đối đừng coi là nghiêm túc.", "t_more": "Sắp có thêm ứng dụng", "d_more": "Các ứng dụng mới đang được chuẩn bị. Mỗi ứng dụng sẽ lộ diện đúng ngày ra mắt.", "f_ask": "Một câu hỏi, một lỗi, một ý tưởng? Viết cho {email}.", "f_legal": "Chính sách bảo mật và điều khoản sử dụng, theo từng ứng dụng."},
+    "id": {"title": "dcyou — aplikasi ponsel", "desc": "dcyou — aplikasi ponsel yang sederhana, dibuat sendirian oleh David Turbert. Kuis, game, dan alat-alat kecil untuk keseharian.", "tagline": "Aplikasi ponsel yang sederhana: satu ide, beberapa layar, dan jalan.", "sub": "Dirancang dan dibuat sendirian oleh David Turbert. Sebagian besar bisa langsung dicoba di browser, tanpa memasang apa pun.", "h_now": "Bisa dicoba sekarang", "h_soon": "Sedang disiapkan", "b_soon": "segera", "b_stores": "segera di store", "langlabel": "Bahasa", "alticon": "Ikon aplikasi {app}", "d_lc": "Game koleksi: potret huruf-huruf raksasa di tengah kota dan naikkan peringkat Anda.", "d_dm": "Dua nama, satu skor dari 100: kecocokan cinta, pertemanan, atau gairah.", "d_as": "Serigala, rubah, atau kolibri? Kuis untuk menemukan hewan yang paling mirip Anda.", "d_am": "Zodiak Anda dalam sepuluh tradisi dunia, dari Barat sampai Maya.", "d_ac": "Kuis untuk mengungkap warna aura Anda dan apa yang diceritakannya tentang Anda.", "d_nv": "Jalan hidup, ekspresi, kepribadian: numerologi Anda dari nama dan tanggal lahir.", "d_or": "Ajukan pertanyaan, kocok bola ajaib, lalu tarik kartu hari ini.", "d_br": "Kadar BrainRot Anda hari ini. Jangan sekali-kali dianggap serius.", "t_more": "Aplikasi lain segera hadir", "d_more": "Aplikasi baru sedang disiapkan. Masing-masing diperkenalkan pada hari rilisnya.", "f_ask": "Ada pertanyaan, bug, atau ide? Tulis ke {email}.", "f_legal": "Kebijakan privasi dan syarat penggunaan, per aplikasi."},
+    "ms": {"title": "dcyou — aplikasi mudah alih", "desc": "dcyou — aplikasi mudah alih yang ringkas, dibina seorang diri oleh David Turbert. Kuiz, permainan dan alat kecil untuk kegunaan harian.", "tagline": "Aplikasi mudah alih yang ringkas: satu idea, beberapa skrin, dan ia berfungsi.", "sub": "Direka dan dibina seorang diri oleh David Turbert. Kebanyakannya boleh dicuba terus dalam pelayar, tanpa perlu memasang apa-apa.", "h_now": "Boleh cuba sekarang", "h_soon": "Sedang disediakan", "b_soon": "akan datang", "b_stores": "akan datang di store", "langlabel": "Bahasa", "alticon": "Ikon aplikasi {app}", "d_lc": "Permainan kutipan: rakam gambar papan huruf gergasi di tengah bandar dan naik ke papan kedudukan.", "d_dm": "Dua nama, satu skor daripada 100: keserasian cinta, persahabatan atau ghairah.", "d_as": "Serigala, rubah atau burung kolibri? Kuiz untuk mencari haiwan yang paling menyerupai anda.", "d_am": "Bintang anda menurut sepuluh tradisi dunia, dari Barat hingga Maya.", "d_ac": "Kuiz untuk mendedahkan warna aura anda dan apa yang diceritakannya tentang anda.", "d_nv": "Laluan hidup, ekspresi, personaliti: numerologi anda daripada nama dan tarikh lahir.", "d_or": "Ajukan soalan anda, goncang bola ajaib dan cabut kad hari ini.", "d_br": "Tahap BrainRot anda hari ini. Jangan sesekali ambil serius.", "t_more": "Lebih banyak aplikasi akan datang", "d_more": "Aplikasi baharu sedang disediakan. Setiap satu didedahkan pada hari pelancarannya.", "f_ask": "Ada soalan, pepijat atau idea? Tulis kepada {email}.", "f_legal": "Dasar privasi dan terma penggunaan, mengikut setiap aplikasi."},
+    "zh": {"title": "dcyou — 手机应用", "desc": "dcyou — David Turbert 一个人开发的简单手机应用。小测试、小游戏，还有日常用得上的小工具。", "tagline": "简单的手机应用。一个想法，几个界面，然后就跑起来了。", "sub": "全部由 David Turbert 一个人设计、一个人开发。大多数不用安装，在浏览器里就能直接试。", "h_now": "现在就能试", "h_soon": "正在开发", "b_soon": "即将上线", "b_stores": "即将上架应用商店", "langlabel": "语言", "alticon": "{app} 的应用图标", "d_lc": "一款用照片收集的游戏。拍下城市里的巨型字母地标，一路往排行榜上爬。", "d_dm": "输入两个名字，得到一个百分制的契合度，爱情、友情、激情都能测。", "d_as": "狼、狐狸，还是蜂鸟？一个小测试，找到和你最像的动物。", "d_am": "从西方到玛雅，看看你在世界十种传统里分别是什么星座。", "d_ac": "一个小测试，看看你的气场是什么颜色，又说明了什么。", "d_nv": "根据名字和出生日期，算出你的生命灵数、表达数和人格数。", "d_or": "想好问题，摇一摇魔法八号球，再抽一张今日卡片。", "d_br": "你今天的 BrainRot 指数。千万别当真。", "t_more": "更多应用正在路上", "d_more": "还有新应用正在开发中，每一款都会在上线当天揭晓。", "f_ask": "有问题、有 bug、有想法？写信到 {email}。", "f_legal": "隐私政策和使用条款，每个应用都单独列出。"},
+    "zh-TW": {"title": "dcyou — 手機 App", "desc": "dcyou — David Turbert 一個人開發的簡單手機 App。心理測驗、小遊戲，還有日常用得到的小工具。", "tagline": "簡單的手機 App。一個想法，幾個畫面，然後它就動起來了。", "sub": "從設計到開發都是 David Turbert 一個人。大部分不用安裝，直接在瀏覽器裡就能玩玩看。", "h_now": "現在就能玩", "h_soon": "製作中", "b_soon": "即將推出", "b_stores": "即將上架商店", "langlabel": "語言", "alticon": "{app} 的 App 圖示", "d_lc": "拍下城市裡那些巨大的字母地標，一張一張收集，順便往排行榜上爬。", "d_dm": "輸入兩個名字，馬上給你一個百分制的契合度，愛情、友情、熱情都測得到。", "d_as": "狼、狐狸，還是蜂鳥？一個測驗，找出跟你最像的動物。", "d_am": "從西洋到馬雅，看看世界十種傳統裡，你各是什麼星座。", "d_ac": "一個測驗，看看你的光環是什麼顏色，又透露了什麼。", "d_nv": "用你的名字和出生年月日，算出生命靈數、表達數和人格數。", "d_or": "先想好問題，搖一搖神奇八號球，再抽一張今天的牌。", "d_br": "你今天的 BrainRot 指數。千萬不要當真。", "t_more": "更多 App 正在路上", "d_more": "還有新的 App 正在製作中，每一款都會在上線當天揭曉。", "f_ask": "有問題、有 bug、有想法嗎？寫信到 {email}。", "f_legal": "隱私權政策和使用條款，每個 App 都分開列出。"},
+    "ja": {"title": "dcyou — モバイルアプリ", "desc": "dcyou — David Turbert がひとりで作る、シンプルなモバイルアプリ。クイズ、ゲーム、暮らしのちょっとした道具たちです。", "tagline": "シンプルなモバイルアプリ。アイデアがひとつ、画面が数枚。それでちゃんと動きます。", "sub": "David Turbert がひとりで設計し、ひとりで作っています。ほとんどはインストール不要で、ブラウザからそのまま試せます。", "h_now": "今すぐ試せる", "h_soon": "準備中", "b_soon": "近日公開", "b_stores": "ストアで近日公開", "langlabel": "言語", "alticon": "{app} のアプリアイコン", "d_lc": "写真で集めるゲームです。街にある大きな文字モニュメントを撮って、ランキングを駆け上がりましょう。", "d_dm": "ふたりの名前で、100点満点の相性スコア。恋愛、友情、情熱の三つで見ていきます。", "d_as": "オオカミ、キツネ、それともハチドリ？あなたに似ている動物がわかるクイズです。", "d_am": "西洋からマヤまで、世界の十の伝統で読み解くあなたの星座。", "d_ac": "あなたのオーラの色と、その色が語るあなた自身がわかるクイズです。", "d_nv": "ライフパスナンバー、表現数、人格数。お名前と生年月日から、あなたの数秘術を読み解きます。", "d_or": "質問を思い浮かべて、マジックボールを振って、今日の一枚を引きましょう。", "d_br": "今日のあなたの BrainRot 指数。まちがっても真に受けないでください。", "t_more": "新しいアプリを準備中", "d_more": "新しいアプリを開発中です。それぞれ公開当日にお披露目します。", "f_ask": "質問、不具合、アイデアなど、{email} までお気軽にどうぞ。", "f_legal": "プライバシーポリシーと利用規約は、アプリごとにご用意しています。"},
+    "ko": {"title": "dcyou — 모바일 앱", "desc": "dcyou — David Turbert가 혼자 만드는 심플한 모바일 앱. 퀴즈, 게임, 그리고 일상에 쓸모 있는 작은 도구들.", "tagline": "심플한 모바일 앱. 아이디어 하나, 화면 몇 개, 그리고 잘 돌아갑니다.", "sub": "David Turbert가 혼자 기획하고 혼자 만듭니다. 대부분은 설치 없이 브라우저에서 바로 써 볼 수 있어요.", "h_now": "지금 써 보기", "h_soon": "준비 중", "b_soon": "곧 출시", "b_stores": "스토어 출시 예정", "langlabel": "언어", "alticon": "{app} 앱 아이콘", "d_lc": "사진으로 모으는 게임. 도시에 서 있는 커다란 레터 조형물을 찍고 순위를 올려 보세요.", "d_dm": "이름 두 개를 넣으면 100점 만점 궁합 점수. 사랑, 우정, 열정으로 나눠서 봅니다.", "d_as": "늑대, 여우, 아니면 벌새? 나와 닮은 동물을 찾아 주는 퀴즈입니다.", "d_am": "서양부터 마야까지, 세계 열 가지 전통으로 보는 나의 별자리.", "d_ac": "내 오라는 무슨 색인지, 그 색이 나에 대해 뭐라고 말하는지 알려 주는 퀴즈입니다.", "d_nv": "생명수, 표현수, 인격수까지. 이름과 생년월일로 나의 수비학을 풀어 봅니다.", "d_or": "질문을 떠올리고 마법의 구슬을 흔든 다음, 오늘의 카드를 뽑아 보세요.", "d_br": "오늘의 BrainRot 지수. 절대로 진지하게 받아들이지 마세요.", "t_more": "새로운 앱을 준비 중", "d_more": "새로운 앱들을 개발하고 있습니다. 각각 출시 당일에 공개됩니다.", "f_ask": "궁금한 점, 버그, 아이디어가 있다면 {email}로 메일 주세요.", "f_legal": "개인정보 처리방침과 이용약관은 앱별로 안내합니다."}
+  };
+
+  var EMAIL = "support@dcyou.co";
+  var STORE_KEY = "dcyou.lang";
+
+  var html = document.documentElement;
+  var byCode = {};
+  for (var i = 0; i < LANGS.length; i++) byCode[LANGS[i][0]] = LANGS[i];
+
+  /* ---- détection ------------------------------------------------------ */
+  function normalize(tag) {
+    var t = String(tag || "").replace(/_/g, "-");
+    var base = t.split("-")[0].toLowerCase();
+    if (base === "zh") return /\b(hant|tw|hk|mo)\b/i.test(t) ? "zh-TW" : "zh";
+    if (base === "pt") return /\bbr\b/i.test(t) ? "pt-BR" : "pt";
+    if (base === "no" || base === "nn" || base === "nb") return "nb";
+    if (base === "in") return "id";           /* ancien code ISO pour l'indonésien */
+    return T[base] ? base : "";
+  }
+
+  function detect() {
+    try {
+      var saved = localStorage.getItem(STORE_KEY);
+      if (saved && T[saved]) return saved;
+    } catch (e) { /* stockage indisponible : on continue */ }
+
+    var tags = (navigator.languages && navigator.languages.length)
+      ? navigator.languages
+      : [navigator.language];
+    for (var i = 0; i < tags.length; i++) {
+      var code = normalize(tags[i]);
+      if (code && T[code]) return code;
+    }
+    return "en";
+  }
+
+  /* ---- application ---------------------------------------------------- */
+  function setMeta(attr, name, value) {
+    var el = document.head.querySelector("meta[" + attr + '="' + name + '"]');
+    if (el) el.setAttribute("content", value);
+  }
+
+  function buildAsk(tpl) {
+    var p = document.getElementById("ask");
+    if (!p) return;
+    var parts = String(tpl).split("{email}");
+    var a = document.createElement("a");
+    a.href = "mailto:" + EMAIL;
+    a.textContent = EMAIL;
+    p.textContent = "";
+    p.appendChild(document.createTextNode(parts[0]));
+    p.appendChild(a);
+    p.appendChild(document.createTextNode(parts.length > 1 ? parts[1] : ""));
+  }
+
+  function apply(code) {
+    var d = T[code] || T.en;
+    var meta = byCode[code] || byCode.en;
+
+    html.lang = code;
+    html.dir = RTL[code] ? "rtl" : "ltr";
+
+    document.title = d.title;
+    setMeta("name", "description", d.desc);
+    setMeta("property", "og:title", d.title);
+    setMeta("property", "og:description", d.desc);
+    setMeta("property", "og:locale", meta[2]);
+
+    var nodes = document.querySelectorAll("[data-i18n]");
+    for (var i = 0; i < nodes.length; i++) {
+      var k = nodes[i].getAttribute("data-i18n");
+      if (d[k]) nodes[i].textContent = d[k];
+    }
+
+    var imgs = document.querySelectorAll("[data-i18n-alt]");
+    for (var j = 0; j < imgs.length; j++) {
+      var ak = imgs[j].getAttribute("data-i18n-alt");
+      if (d[ak]) imgs[j].alt = d[ak].replace("{app}", imgs[j].getAttribute("data-app"));
+    }
+
+    buildAsk(d.f_ask);
+
+    var sel = document.getElementById("langsel");
+    if (sel) {
+      sel.value = code;
+      sel.setAttribute("aria-label", d.langlabel);
+    }
+  }
+
+  /* ---- sélecteur ------------------------------------------------------ */
+  function buildSelect(current) {
+    var sel = document.getElementById("langsel");
+    if (!sel) return;
+    var frag = document.createDocumentFragment();
+    for (var i = 0; i < LANGS.length; i++) {
+      var o = document.createElement("option");
+      o.value = LANGS[i][0];
+      o.textContent = LANGS[i][1];
+      o.lang = LANGS[i][0];
+      frag.appendChild(o);
+    }
+    sel.appendChild(frag);
+    sel.value = current;
+    sel.addEventListener("change", function () {
+      var code = sel.value;
+      try { localStorage.setItem(STORE_KEY, code); } catch (e) { /* ignore */ }
+      apply(code);
+    });
+  }
+
+  html.className += (html.className ? " " : "") + "js";
+  var initial = detect();
+  buildSelect(initial);
+  apply(initial);
+})();
+</script>
+</body>
+</html>

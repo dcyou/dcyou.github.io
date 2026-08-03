@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+    <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#818cf8"/>
+      <stop offset="1" stop-color="#4f46e5"/>
+    </linearGradient>
+  </defs>
+    <rect width="1024" height="1024" rx="224" ry="224" fill="url(#g)"/>
+    <circle cx="780" cy="220" r="520" fill="#c084fc" fill-opacity="0.22"/>
+    
+  <g transform="translate(0 0) translate(512 512) scale(0.92) translate(-512 -512)" opacity="1">
+    <!-- back half of orbital ring (behind planet) -->
+    <ellipse cx="512" cy="512" rx="330" ry="120" fill="none"
+      stroke="#ffffff" stroke-width="26" stroke-linecap="round"
+      transform="rotate(-22 512 512)"
+      stroke-dasharray="640 1200" stroke-opacity="0.55"/>
+    <!-- planet body -->
+    <circle cx="512" cy="512" r="200" fill="#ffffff"/>
+    <!-- subtle craters / shading (translucent dark) -->
+    <circle cx="448" cy="452" r="34" fill="#0b1021" fill-opacity="0.12"/>
+    <circle cx="566" cy="540" r="46" fill="#0b1021" fill-opacity="0.10"/>
+    <circle cx="492" cy="588" r="22" fill="#0b1021" fill-opacity="0.10"/>
+    <!-- front half of orbital ring (over planet) -->
+    <ellipse cx="512" cy="512" rx="330" ry="120" fill="none"
+      stroke="#ffffff" stroke-width="26" stroke-linecap="round"
+      transform="rotate(-22 512 512)"
+      stroke-dasharray="640 1200" stroke-dashoffset="-920" stroke-opacity="0.9"/>
+    <!-- sparkle stars (4-point diamonds) -->
+    <g fill="#ffffff">
+      <path d="M772 312 q14 0 14 -14 q0 14 14 14 q-14 0 -14 14 q0 -14 -14 -14 Z" transform="translate(-30 -30) scale(2.6) translate(-772 -312)"/>
+      <path d="M270 700 q12 0 12 -12 q0 12 12 12 q-12 0 -12 12 q0 -12 -12 -12 Z" transform="translate(-15 -10) scale(2.0) translate(-270 -700)"/>
+      <path d="M716 720 q9 0 9 -9 q0 9 9 9 q-9 0 -9 9 q0 -9 -9 -9 Z" transform="translate(-8 -6) scale(1.5) translate(-716 -720)"/>
+    </g>
+  </g>
+  </svg>
