@@ -28,6 +28,14 @@ sortie vient d'avoir lieu, et à quel rythme le portfolio avance.
 Une app ne rejoint « À essayer maintenant » — avec son nom, sa description et son
 icône dans `icons/` — que **le jour où elle est publiquement accessible**.
 
+**Cette règle s'applique au commit, pas seulement à la page.** Sur un dépôt
+public, un commit reste servi par `raw.githubusercontent.com` et par l'API même
+après que son contenu a été retiré de la page, et les anciens SHA restent
+énumérables via l'API `events`. Retirer un nom dans un commit suivant ne
+l'efface donc pas : ça le laisse une URL plus loin. Un nom non sorti ne doit
+jamais entrer dans un commit — c'est le seul moment où la décision est encore
+réversible.
+
 ## Langues
 
 La page est traduite dans les **30 langues de LettersCatch** (l'union de ce que
