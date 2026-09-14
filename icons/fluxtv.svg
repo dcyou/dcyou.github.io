@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6366f1" />
+      <stop offset="1" stop-color="#22d3ee" />
+    </linearGradient>
+    <linearGradient id="screen" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#312e81" />
+      <stop offset="1" stop-color="#0e7490" />
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="#0b0d12" />
+  <!-- antennes -->
+  <path d="M186 132 L246 196 M326 118 L266 196" stroke="url(#g)" stroke-width="22" stroke-linecap="round" fill="none" />
+  <circle cx="180" cy="126" r="16" fill="#22d3ee" />
+  <circle cx="332" cy="112" r="16" fill="#6366f1" />
+  <!-- poste TV -->
+  <rect x="96" y="192" width="320" height="212" rx="44" fill="url(#g)" />
+  <rect x="120" y="216" width="272" height="164" rx="28" fill="url(#screen)" />
+  <!-- triangle play -->
+  <path d="M228 258 L228 338 L304 298 Z" fill="#e2e8f0" />
+  <!-- pieds -->
+  <rect x="160" y="404" width="56" height="22" rx="11" fill="#6366f1" />
+  <rect x="296" y="404" width="56" height="22" rx="11" fill="#22d3ee" />
+</svg>

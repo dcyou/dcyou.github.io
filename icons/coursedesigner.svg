@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!--
+    CourseDesigner app icon.
+
+    Drawn as pure vector shapes, never an emoji: an emoji renders differently on
+    every platform, rasterises unpredictably, and reads as a placeholder on a
+    store listing. The subject is the thing the app is about — a fence seen from
+    the front, with its wings and rails — over the app's turf-green / brass-gold
+    palette. It has to stay legible at 40 px, so: three shapes, heavy strokes,
+    no fine detail.
+  -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0e5c3e" />
+      <stop offset="0.55" stop-color="#229e6c" />
+      <stop offset="1" stop-color="#d69e4a" />
+    </linearGradient>
+    <linearGradient id="rail" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" />
+      <stop offset="1" stop-color="#e8edf2" />
+    </linearGradient>
+  </defs>
+
+  <rect width="1024" height="1024" rx="228" fill="url(#bg)" />
+
+  <!-- soft light from the top-left, so the tile does not read as flat -->
+  <circle cx="300" cy="250" r="380" fill="#ffffff" opacity="0.10" />
+
+  <!-- the fence: two wings and three rails -->
+  <g fill="url(#rail)">
+    <rect x="196" y="300" width="62" height="440" rx="26" />
+    <rect x="766" y="300" width="62" height="440" rx="26" />
+    <rect x="196" y="392" width="632" height="52" rx="26" />
+    <rect x="196" y="510" width="632" height="52" rx="26" />
+    <rect x="196" y="628" width="632" height="52" rx="26" />
+  </g>
+
+  <!-- ground line, the surface the fence stands on -->
+  <rect x="140" y="784" width="744" height="34" rx="17" fill="#0b2b1e" opacity="0.55" />
+</svg>
