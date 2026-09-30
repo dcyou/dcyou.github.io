@@ -1,16 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
-  <defs>
-    <linearGradient id="fog" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#2dd4bf" />
-      <stop offset="1" stop-color="#fbbf24" />
-    </linearGradient>
-    <filter id="soft">
-      <feGaussianBlur stdDeviation="10" />
-    </filter>
-  </defs>
-  <rect width="512" height="512" rx="92" fill="#061017" />
-  <path d="M96 336c54-42 99-15 144-43 47-29 71-103 176-76" fill="none" stroke="url(#fog)" stroke-width="38" stroke-linecap="round" opacity="0.95" />
-  <path d="M86 390h340" stroke="#d9fff8" stroke-width="28" stroke-linecap="round" opacity="0.35" filter="url(#soft)" />
-  <circle cx="188" cy="198" r="34" fill="#fbbf24" />
-  <circle cx="188" cy="198" r="58" fill="none" stroke="#fbbf24" stroke-width="10" opacity="0.35" />
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="512" height="512"><defs><clipPath id="coin"><rect width="1024" height="1024" rx="184"/></clipPath></defs><title>Unfog</title><g clip-path="url(#coin)">
+<defs><clipPath id="t"><rect x="336" y="160" width="176" height="176"/><rect x="512" y="160" width="176" height="176"/><rect x="160" y="336" width="176" height="176"/><rect x="336" y="336" width="176" height="176"/><rect x="512" y="336" width="176" height="176"/><rect x="688" y="336" width="176" height="176"/><rect x="160" y="512" width="176" height="176"/><rect x="336" y="512" width="176" height="176"/><rect x="512" y="512" width="176" height="176"/><rect x="688" y="512" width="176" height="176"/><rect x="336" y="688" width="176" height="176"/><rect x="512" y="688" width="176" height="176"/></clipPath></defs>
+<rect width="1024" height="1024" fill="#A9BCC6"/>
+<g clip-path="url(#t)">
+ <rect width="1024" height="1024" fill="#F7F4EC"/>
+ <path d="M 708.5 512.0 L 709.7 532.3 L 703.9 552.1 L 692.6 570.3 L 677.7 586.6 L 660.9 601.1 L 643.0 614.2 L 624.0 625.9 L 603.6 635.7 L 581.6 643.0 L 558.4 647.1 L 535.0 648.1 L 512.0 647.0 L 489.6 645.0 L 467.0 643.0 L 443.5 641.1 L 418.6 638.2 L 393.2 632.7 L 369.5 623.2 L 349.9 609.0 L 336.6 591.0 L 330.4 570.7 L 330.2 550.0 L 333.8 530.3 L 338.5 512.0 L 342.8 494.6 L 346.5 477.4 L 350.8 459.9 L 357.3 442.3 L 367.3 425.4 L 381.4 410.1 L 398.8 396.9 L 418.6 385.8 L 440.0 376.3 L 462.6 368.3 L 486.7 362.0 L 512.0 358.4 L 537.8 358.9 L 562.8 364.2 L 585.0 374.4 L 603.6 388.3 L 618.5 403.7 L 631.1 419.1 L 643.4 433.4 L 657.0 446.7 L 672.2 460.2 L 687.6 475.3 L 700.6 492.6 Z" fill="none" stroke="#9C8660" stroke-width="34" stroke-linejoin="round"/>
+<path d="M 870.5 512.0 L 861.0 547.8 L 842.7 581.1 L 819.5 611.4 L 794.3 639.1 L 767.7 665.0 L 739.0 689.1 L 707.2 710.4 L 671.6 727.7 L 633.1 740.1 L 593.1 748.1 L 552.7 753.2 L 512.0 757.0 L 470.1 760.5 L 425.9 762.8 L 379.5 761.4 L 333.2 753.5 L 290.8 736.9 L 256.5 711.3 L 233.0 679.0 L 220.4 643.3 L 215.8 607.7 L 214.9 574.1 L 213.6 542.6 L 210.5 512.0 L 206.6 480.6 L 205.2 447.9 L 209.8 414.4 L 222.7 381.7 L 244.1 351.6 L 272.4 325.1 L 305.4 302.0 L 341.6 281.8 L 380.6 264.5 L 422.3 250.9 L 466.6 242.8 L 512.0 242.2 L 556.2 250.1 L 596.7 265.5 L 632.1 285.8 L 663.2 307.7 L 692.6 328.4 L 723.1 347.3 L 756.6 365.6 L 792.0 385.9 L 825.6 410.7 L 852.4 440.9 L 868.0 475.4 Z" fill="none" stroke="#9C8660" stroke-width="34" stroke-linejoin="round"/>
+<path d="M 1007.0 512.0 L 985.6 560.6 L 960.0 605.6 L 933.2 648.1 L 905.1 689.0 L 873.3 728.3 L 835.7 764.5 L 791.2 795.8 L 740.9 821.2 L 686.9 841.4 L 630.9 858.0 L 572.9 872.8 L 512.0 886.0 L 447.3 895.2 L 379.8 896.7 L 313.2 886.4 L 252.8 862.2 L 203.7 825.4 L 168.4 780.0 L 145.2 731.5 L 129.3 684.3 L 114.7 640.4 L 97.3 598.7 L 76.8 556.7 L 57.0 512.0 L 43.7 463.9 L 42.3 413.8 L 55.5 364.5 L 82.3 318.5 L 119.7 277.2 L 163.9 240.5 L 212.8 207.9 L 265.9 179.5 L 323.4 156.8 L 385.0 142.2 L 448.9 138.2 L 512.0 145.0 L 571.3 160.6 L 625.7 181.0 L 676.7 201.8 L 727.8 220.5 L 782.0 237.5 L 840.1 256.1 L 898.9 280.4 L 952.0 313.8 L 992.4 356.8 L 1014.9 406.9 L 1018.7 460.0 Z" fill="none" stroke="#9C8660" stroke-width="34" stroke-linejoin="round"/>
+</g>
+<g transform="rotate(45 512 512)">
+ <rect x="422" y="422" width="180" height="180" fill="#B93D0B" stroke="#FFFFFF" stroke-width="30"/>
+</g>
+</g></svg>
