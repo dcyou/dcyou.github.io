@@ -16,11 +16,10 @@ pas de framework, pas de CDN, pas de police distante. Thème clair et sombre via
 sujet, ni son concept, ni le nom de fichier de son icône. Une idée annoncée avant
 sa sortie est une idée qu'on se fait prendre.
 
-La section « En préparation » ne contient donc **qu'une seule carte teaser
-anonyme** (clés `t_more` / `d_more`), sans lien et sans icône d'app — le visuel
-est un SVG inline neutre, pas un fichier de `icons/`.
+La page n'annonce pas non plus d'apps à venir : **il n'y a plus de section
+« En préparation »**, pas même une carte teaser anonyme.
 
-**Le nombre d'apps en préparation n'est pas affiché non plus**, volontairement :
+**Le nombre d'apps en préparation n'est jamais affiché**, volontairement :
 il ne sert à rien au visiteur, et surtout il fuit par différence. Quelqu'un qui
 suit la page verrait le compteur passer de 5 à 4 et saurait exactement quelle
 sortie vient d'avoir lieu, et à quel rythme le portfolio avance.
